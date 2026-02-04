@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>One Important Question</title>
+
+    <style>
+        body {
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+            overflow: hidden;
+        }
+
+        /* Floating hearts background */
+        .heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.4);
+            transform: rotate(45deg);
+            animation: float 12s infinite ease-in;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: "";
+            width: 20px;
+            height: 20px;
+            background: inherit;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .heart::before {
+            top: -10px;
+            left: 0;
+        }
+
+        .heart::after {
+            left: -10px;
+            top: 0;
+        }
+
+        @keyframes float {
+            0% {
+                bottom: -50px;
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
+
+            100% {
+                bottom: 110%;
+                opacity: 0;
+            }
+        }
+
+        .card {
+            background: white;
+            padding: 50px 60px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            margin-bottom: 40px;
+            color: #333;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            position: relative;
+        }
+
+        button {
+            padding: 15px 35px;
+            font-size: 18px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+
+        #yes {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #yes:hover {
+            transform: scale(1.05);
+        }
+
+        #no {
+            background-color: #f44336;
+            color: white;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Floating hearts -->
+    <div class="heart" style="left:10%; animation-delay:0s;"></div>
+    <div class="heart" style="left:30%; animation-delay:3s;"></div>
+    <div class="heart" style="left:50%; animation-delay:6s;"></div>
+    <div class="heart" style="left:70%; animation-delay:1s;"></div>
+    <div class="heart" style="left:85%; animation-delay:4s;"></div>
+
+    <div class="card">
+        <h1>Would you go on a date with me? 💖</h1>
+
+        <div class="buttons">
+            <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                <input type="hidden" name="answer" value="She clicked YES ❤️">
+                <button id="yes" type="submit">Yes</button>
+            </form>
+
+            <button id="no">No</button>
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById("no");
+        const buttons = document.querySelector(".buttons");
+
+        let direction = 1;
+
+        noBtn.style.position = "relative";
+        noBtn.style.left = "0px";
+
+        noBtn.addEventListener("mouseenter", () => {
+            const containerWidth = buttons.offsetWidth;
+            const btnWidth = noBtn.offsetWidth;
+
+            const maxMove = containerWidth / 2 - btnWidth;
+            direction *= -1;
+
+            const moveDistance = Math.floor(Math.random() * 80) + 120;
+            let newLeft = parseInt(noBtn.style.left || 0) + moveDistance * direction;
+
+            newLeft = Math.max(-maxMove, Math.min(maxMove, newLeft));
+
+            noBtn.style.left = newLeft + "px";
+        });
+    </script>
+
+
+</body>
+
+</html>
