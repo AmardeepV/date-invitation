@@ -15,6 +15,7 @@
             font-family: "Segoe UI", sans-serif;
             background: linear-gradient(135deg, #ff9a9e, #fad0c4);
             overflow: hidden;
+            position: relative;
         }
 
         /* Floating hearts background */
@@ -25,6 +26,7 @@
             background: rgba(255, 255, 255, 0.4);
             transform: rotate(45deg);
             animation: float 12s infinite ease-in;
+            z-index: 1;
         }
 
         .heart::before,
@@ -124,43 +126,48 @@
         <h1>Would you go on a date with me? 💖</h1>
 
         <div class="buttons">
-            <form action="https://formspree.io/f/mvzqeege" method="POST">
-                <input type="hidden" name="answer" value="She clicked YES ❤️">
-                <input type="hidden" name="_subject" value="💖 Date Proposal Response">
-                <input type="hidden" name="_redirect" value="https://amardeepv.github.io/date-invitation/yes.html">
-                <button id="yes" type="submit">Yes</button>
-            </form>
-
-
+            <button id="yes">Yes</button>
             <button id="no">No</button>
         </div>
     </div>
 
     <script>
+        /* NO button logic (uncatchable) */
         const noBtn = document.getElementById("no");
         const buttons = document.querySelector(".buttons");
 
         let direction = 1;
-
-        noBtn.style.position = "relative";
         noBtn.style.left = "0px";
 
         noBtn.addEventListener("mouseenter", () => {
             const containerWidth = buttons.offsetWidth;
             const btnWidth = noBtn.offsetWidth;
-
             const maxMove = containerWidth / 2 - btnWidth;
-            direction *= -1;
 
+            direction *= -1;
             const moveDistance = Math.floor(Math.random() * 80) + 120;
             let newLeft = parseInt(noBtn.style.left || 0) + moveDistance * direction;
 
             newLeft = Math.max(-maxMove, Math.min(maxMove, newLeft));
-
             noBtn.style.left = newLeft + "px";
         });
-    </script>
 
+        /* YES button logic (Formspree + redirect) */
+        document.getElementById("yes").addEventListener("click", () => {
+            fetch("https://formspree.io/f/mvzqeege", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    answer: "She clicked YES ❤️"
+                })
+            })
+                .finally(() => {
+                    window.location.href = "yes.html";
+                });
+        });
+    </script>
 
 </body>
 
